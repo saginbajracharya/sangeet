@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sangeet/src/widgets/sidebar.dart';
 import 'package:sangeet/src/widgets/themeSwitch.dart';
-import 'package:sangeet/widgets/sidebar.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -18,7 +18,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       drawer: SideBar(),
       appBar: AppBar(
-        title: Center(child: Text(widget.title)),
+        centerTitle: true,
+        title: Text(widget.title),
       ),
       body: Center(
         child: Column(
