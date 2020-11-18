@@ -12,6 +12,9 @@ final darkTheme = ThemeData(
   accentColor: Colors.white,
   accentIconTheme: IconThemeData(color: Colors.black),
   dividerColor: Colors.black12,
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
+    foregroundColor: Colors.black,
+  ),
 );
 
 final lightTheme = ThemeData(
@@ -22,6 +25,9 @@ final lightTheme = ThemeData(
   accentColor: Colors.black,
   accentIconTheme: IconThemeData(color: Colors.white),
   dividerColor: Colors.white54,
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
+    foregroundColor: Colors.white,
+  ),
 );
 
 class ThemeNotifier with ChangeNotifier {

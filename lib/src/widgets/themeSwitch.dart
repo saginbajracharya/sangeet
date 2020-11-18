@@ -30,8 +30,8 @@ class _ThemeSwitchState extends State<ThemeSwitch> {
       onChanged: (value) {
         setState(() {
           _darkTheme = value;
-          print(_darkTheme);
-          print("true->Dark || False->Light");
+          // print(_darkTheme);
+          // print("true->Dark || False->Light");
         });
         onThemeChanged(value, themeNotifier);
       },
