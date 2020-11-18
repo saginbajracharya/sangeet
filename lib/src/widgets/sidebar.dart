@@ -19,7 +19,7 @@ class SideBar extends StatelessWidget{
           ),
           ListTile(
             leading: Icon(Icons.music_note),
-            title: Text('List All'),
+            title: Text('All Songs'),
             onTap: () => {},
           ),
           ListTile(
