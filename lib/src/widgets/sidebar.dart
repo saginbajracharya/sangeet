@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sangeet/src/pages/allList.dart';
 
 class SideBar extends StatelessWidget{
   @override
@@ -19,8 +20,14 @@ class SideBar extends StatelessWidget{
           ),
           ListTile(
             leading: Icon(Icons.music_note),
-            title: Text('All Songs'),
-            onTap: () => {},
+            title: Text('All Music'),
+            onTap: () {
+              Navigator.push(context,
+                MaterialPageRoute(
+                  builder: (context) => AllList()
+                ),
+              );
+            }
           ),
           ListTile(
             leading: Icon(Icons.settings),
