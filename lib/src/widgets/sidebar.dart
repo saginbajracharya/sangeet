@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sangeet/src/pages/allList.dart';
+import 'package:sangeet/src/widgets/themeSwitch.dart';
 
 class SideBar extends StatelessWidget{
   @override
@@ -9,7 +10,7 @@ class SideBar extends StatelessWidget{
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Text('Side Menu', style: TextStyle(color: Colors.white, fontSize: 25)),
+            child: Text('', style: TextStyle(color: Colors.white, fontSize: 25)),
             decoration: BoxDecoration(
               color: Colors.green,
               image: DecorationImage(
@@ -43,6 +44,10 @@ class SideBar extends StatelessWidget{
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
             onTap: () => {Navigator.of(context).pop()},
+          ),
+          ListTile(
+            leading: Icon(Icons.settings_display),
+            title: ThemeSwitch(),
           ),
         ],
       ),

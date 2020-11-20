@@ -1,3 +1,4 @@
+import 'package:day_night_switcher/day_night_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:sangeet/src/helper/constants.dart';
 import 'package:provider/provider.dart';
@@ -25,17 +26,18 @@ class _ThemeSwitchState extends State<ThemeSwitch> {
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
     _darkTheme = (themeNotifier.getTheme() == darkTheme);
-    return Switch(
-      activeColor: Theme.of(context).accentColor,
-      onChanged: (value) {
-        setState(() {
-          _darkTheme = value;
-          // print(_darkTheme);
-          // print("true->Dark || False->Light");
-        });
-        onThemeChanged(value, themeNotifier);
-      },
-      value: _darkTheme,
+    return Container(
+      height: 44.0,
+      child: DayNightSwitcher(
+        isDarkModeEnabled: _darkTheme,
+        cloudsColor:Colors.transparent,
+        onStateChanged: (value) {
+          onThemeChanged(value, themeNotifier);
+          setState(() {
+            _darkTheme = value;
+          });
+        },
+      ),
     );
   }
 }
