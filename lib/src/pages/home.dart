@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:sangeet/src/controller/musicController.dart';
 import 'package:sangeet/src/widgets/sidebar.dart';
 
 class HomePage extends StatefulWidget {
@@ -9,20 +11,85 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends StateMVC<HomePage> {
+  MusicController _con;
+  _HomePageState() : super(MusicController()) {
+    _con = controller;
+  }
+  void initState() {
+    super.initState();
+    _con.setupAudio();
+  }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: SideBar(),
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
+    // final themeNotifier = Provider.of<ThemeNotifier>(context);
+    return MaterialApp(
+      title: 'Sangeet',
+      debugShowCheckedModeBanner: false,
+      // theme: themeNotifier.getTheme(),
+      home: Scaffold(
+        drawer: SideBar(),
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(widget.title),
+        ),
+        body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(5),
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    _con.formatDuration(_con.audioManagerInstance.position),
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      child: SliderTheme(
+                          data: SliderTheme.of(context).copyWith(
+                            trackHeight: 2,
+                            thumbColor: Colors.blueAccent,
+                            overlayColor: Colors.blue,
+                            thumbShape: RoundSliderThumbShape(
+                              disabledThumbRadius: 5,
+                              enabledThumbRadius: 5,
+                            ),
+                            overlayShape: RoundSliderOverlayShape(
+                              overlayRadius: 10,
+                            ),
+                            activeTrackColor: Colors.blueAccent,
+                            inactiveTrackColor: Colors.grey,
+                          ),
+                          child: Slider(
+                            value: _con.slider ?? 0,
+                            onChanged: (value) {
+                              setState(() {
+                                _con.slider = value;
+                              });
+                            },
+                            onChangeEnd: (value) {
+                              if (_con.audioManagerInstance.duration != null) {
+                                Duration msec = Duration(
+                                    milliseconds:
+                                    (_con.audioManagerInstance.duration.inMilliseconds *
+                                        value)
+                                        .round());
+                                _con.audioManagerInstance.seekTo(msec);
+                              }
+                            },
+                          )),
+                    ),
+                  ),
+                  Text(
+                    _con.formatDuration(_con.audioManagerInstance.duration),
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ],
+              ),
+            ),
             Container(
               padding: EdgeInsets.symmetric(vertical: 16),
               child: Row(
@@ -35,7 +102,7 @@ class _HomePageState extends State<HomePage> {
                             Icons.skip_previous,
                             color: Colors.white,
                           ),
-                          onPressed: () => print('Previous')
+                          onPressed: () => _con.audioManagerInstance.previous()
                       ),
                     ),
                     backgroundColor: Colors.black87,
@@ -46,11 +113,15 @@ class _HomePageState extends State<HomePage> {
                     child: Center(
                       child: IconButton(
                         onPressed: () async {
-                          print('Play / Pause');
+                          if(_con.audioManagerInstance.isPlaying)
+                          _con.audioManagerInstance.toPause();
+                          _con.audioManagerInstance.playOrPause();
                         },
                         padding: const EdgeInsets.all(0.0),
                         icon: Icon(
-                          Icons.play_arrow,
+                          _con.audioManagerInstance.isPlaying
+                            ? Icons.pause
+                            : Icons.play_arrow,
                           color: Colors.white,
                         ),
                       ),
@@ -64,7 +135,7 @@ class _HomePageState extends State<HomePage> {
                             Icons.skip_next,
                             color: Colors.white,
                           ),
-                          onPressed: () => print('Next')
+                          onPressed: () => _con.audioManagerInstance.next()
                       ),
                     ),
                   ),
@@ -72,8 +143,8 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ],
-        ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        ),// This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }

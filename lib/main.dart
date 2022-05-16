@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sangeet/src/helper/constants.dart';
 import 'package:sangeet/src/pages/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:splashscreen/splashscreen.dart';
 
 final darkTheme = ThemeData(
   primarySwatch: Colors.grey,
@@ -64,12 +65,23 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final themeNotifier = Provider.of<ThemeNotifier>(context);
-    return MaterialApp(
-      title: 'Sangeet',
-      debugShowCheckedModeBanner: false,
-      theme: themeNotifier.getTheme(),
-      home: HomePage(title: 'Sangeet'),
+    return new SplashScreen(
+      seconds: 14,
+      navigateAfterSeconds: new HomePage(),
+      title: new Text(
+        'Welcome In SplashScreen',
+        style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+      ),
+      image: new Image.network('https://flutter.io/images/catalog-widget-placeholder.png'),
+      backgroundColor: Colors.white,
+      loaderColor: Colors.red,
     );
+    // final themeNotifier = Provider.of<ThemeNotifier>(context);
+    // return MaterialApp(
+    //   title: 'Sangeet',
+    //   debugShowCheckedModeBanner: false,
+    //   theme: themeNotifier.getTheme(),
+    //   home: HomePage(title: 'Sangeet'),
+    // );
   }
 }
